@@ -14,7 +14,7 @@ namespace authorisation.api.Managers;
 
 public class LoginManager
 {
-    private readonly IMongoCollection<User> _user;
+    private readonly IMongoCollection<UserEntity> _user;
     private readonly PasswordHasher _passwordHasher;
     private readonly IConfiguration _configuration;
 
@@ -26,12 +26,12 @@ public class LoginManager
 
         _user = mongoClient
             .GetDatabase(config.Value.DatabaseName)
-            .GetCollection<User>(config.Value.UserCollectionName);
+            .GetCollection<UserEntity>(config.Value.UserCollectionName);
 
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<User?> Authenticate(Login login)
+    public async Task<UserModel?> Authenticate(LoginModel login)
     {
         var user = await _user.Find(u => u.Email == login.Email).FirstOrDefaultAsync();
 
@@ -40,13 +40,13 @@ public class LoginManager
             var isPasswordMatch = _passwordHasher.ValidatePassword(login.Password, user.Password);
 
             if (isPasswordMatch)
-                return user;
+                return user.ToUserModel();
         }
 
         return null;
     }
 
-    public string GenerateToken(User user)
+    public string GenerateToken(UserModel user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

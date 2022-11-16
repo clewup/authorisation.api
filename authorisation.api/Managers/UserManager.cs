@@ -10,49 +10,48 @@ namespace authorisation.api.Managers;
 
 public class UserManager
 {
-    private readonly IMongoCollection<User> _user;
+    private readonly IMongoCollection<UserEntity> _user;
         private readonly PasswordHasher _passwordHasher;
 
-        /* User entity contains the hashed password. */
-
+        /* UserEntity contains the hashed password.
+        UserModel does not contain the hashed password.
+        The Ui receives the UserModel. */
+        
         public UserManager(IOptions<DbConfig> config, PasswordHasher passwordHasher)
         {
             var mongoClient = new MongoClient(config.Value.ConnectionString);
 
             _user = mongoClient
                 .GetDatabase(config.Value.DatabaseName)
-                .GetCollection<User>(config.Value.UserCollectionName);
+                .GetCollection<UserEntity>(config.Value.UserCollectionName);
 
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<List<User>> GetUsers()
+        public async Task<List<UserModel>> GetUsers()
         {
             var users = await _user.Find(_ => true).ToListAsync();
-            return users;
+            
+            return users.ToUserModel();
         }
 
-        public async Task<User> GetUser(Guid id)
+        public async Task<UserModel> GetUser(Guid id)
         {
             var user = await _user.Find(u => u.Id == id).FirstOrDefaultAsync();
-            return user;
+            return user.ToUserModel();
         }
 
-        public async Task<User> RegisterUser(Register user)
+        public async Task<UserModel> RegisterUser(RegisterModel user)
         {
             var hashedPassword = _passwordHasher.HashPassword(user.Password);
             var registeredUser = user.Register(hashedPassword);
+            
             await _user.InsertOneAsync(registeredUser);
-            return registeredUser;
+            
+            return registeredUser.ToUserModel();
         }
 
-        public async Task<User> UpdateUser(User user)
-        {
-            await _user.ReplaceOneAsync(u => u.Id == user.Id, user);
-            return user;
-        }
-
-        public async Task<bool> ValidateUser(Register user)
+        public async Task<bool> ValidateUser(RegisterModel user)
         {
             var email = await _user.Find(u => u.Email == user.Email).FirstOrDefaultAsync();
             

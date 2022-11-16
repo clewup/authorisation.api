@@ -26,9 +26,6 @@ public class UserController : ControllerBase
             {
                 var users = await _userManager.GetUsers();
 
-                if (users == null)
-                    return NoContent();
-
                 return Ok(users);
             }
             catch
@@ -46,9 +43,6 @@ public class UserController : ControllerBase
             {
                 var user = await _userManager.GetUser(id);
 
-                if (user == null)
-                    return NoContent();
-
                 return Ok(user);
             }
             catch
@@ -59,7 +53,7 @@ public class UserController : ControllerBase
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegisterUser([FromBody] Register user)
+        public async Task<IActionResult> RegisterUser([FromBody] RegisterModel user)
         {
             try
             {
@@ -77,29 +71,6 @@ public class UserController : ControllerBase
             catch
             {
                 _logger.LogWarning($"UserController, CreateUser: Error creating user {user.Email}.");
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-        }
-
-        [HttpPut]
-        [Route("{userId}")]
-        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] User user)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
-
-                if (id != user.Id)
-                    return BadRequest("Mismatching UserId.");
-
-                var updatedUser = await _userManager.UpdateUser(user);
-
-                return Ok(updatedUser);
-            }
-            catch
-            {
-                _logger.LogWarning($"UserController, UpdateUser: Error updating user {user.Id}.");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

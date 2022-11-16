@@ -20,7 +20,7 @@ public class LoginController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost]
-    public async Task<IActionResult> Login([FromBody] Login login)
+    public async Task<IActionResult> Login([FromBody] LoginModel login)
     {
         var user = await _loginManager.Authenticate(login);
 

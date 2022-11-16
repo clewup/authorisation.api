@@ -1,6 +1,6 @@
 namespace authorisation.api.Classes;
 
-public class Register
+public class RegisterModel
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

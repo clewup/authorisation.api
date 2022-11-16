@@ -5,9 +5,9 @@ namespace authorisation.api.Services;
 
 public static class Registration
 {
-    public static User Register(this Register user, string hashedPassword)
+    public static UserEntity Register(this RegisterModel user, string hashedPassword)
     {
-        return new User()
+        return new UserEntity()
         {
             Id = new Guid(),
             FirstName = user.FirstName,
