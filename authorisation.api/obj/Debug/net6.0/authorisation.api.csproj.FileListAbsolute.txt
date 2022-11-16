@@ -33,3 +33,15 @@
 /Users/clew/Documents/repos/authorisation.api/authorisation.api/obj/Debug/net6.0/authorisation.api.pdb
 /Users/clew/Documents/repos/authorisation.api/authorisation.api/obj/Debug/net6.0/authorisation.api.genruntimeconfig.cache
 /Users/clew/Documents/repos/authorisation.api/authorisation.api/obj/Debug/net6.0/ref/authorisation.api.dll
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/BCrypt.Net-Next.dll
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/DnsClient.dll
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/MongoDB.Bson.dll
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/MongoDB.Driver.dll
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/MongoDB.Driver.Core.dll
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/MongoDB.Libmongocrypt.dll
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/SharpCompress.dll
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/Snappier.dll
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/ZstdSharp.dll
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/runtimes/linux/native/libmongocrypt.so
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/runtimes/osx/native/libmongocrypt.dylib
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/runtimes/win/native/mongocrypt.dll
