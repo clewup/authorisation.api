@@ -29,7 +29,8 @@ public class LoginController : ControllerBase
             var token = _loginManager.GenerateToken(user);
             return Ok(token);
         }
-
+        
+        _logger.LogInformation($"Incorrect username/password for {login.Email}");
         return NotFound("Incorrect username/password.");
     }
 }
