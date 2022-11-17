@@ -4,6 +4,8 @@ using authorisation.api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
+var DefaultCorsPolicy = "DefaultCorsPolicy";
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -32,10 +34,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 
 // Cors
-builder.Services.AddCors(p => p.AddPolicy("DefaultCorsPolicy", options =>
+builder.Services.AddCors(options =>
 {
-    options.WithOrigins("http://localhost:3000", "https://localhost:3000").AllowAnyMethod().AllowAnyHeader();
-}));
+    options.AddPolicy(name: DefaultCorsPolicy,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000",
+                    "https://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 
 builder.Services.AddAuthorization();
 
