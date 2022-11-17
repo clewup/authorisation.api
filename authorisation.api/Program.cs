@@ -32,9 +32,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 
 // Cors
-builder.Services.AddCors(p => p.AddPolicy("DefaultCorsPolicy", builder =>
+builder.Services.AddCors(p => p.AddPolicy("DefaultCorsPolicy", options =>
 {
-    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+    options.WithOrigins("http://localhost:3000", "https://localhost:3000").AllowAnyMethod().AllowAnyHeader();
 }));
 
 builder.Services.AddAuthorization();
