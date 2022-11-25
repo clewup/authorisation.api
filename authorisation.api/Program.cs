@@ -8,6 +8,19 @@ var DefaultCorsPolicy = "DefaultCorsPolicy";
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: DefaultCorsPolicy,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000",
+                    "https://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -31,19 +44,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
-});
-
-// Cors
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: DefaultCorsPolicy,
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:3000",
-                    "https://localhost:3000")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
 });
 
 builder.Services.AddAuthorization();

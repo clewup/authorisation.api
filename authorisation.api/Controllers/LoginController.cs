@@ -27,7 +27,14 @@ public class LoginController : ControllerBase
         if (user != null)
         {
             var token = _loginManager.GenerateToken(user);
-            return Ok(token);
+            
+            var payload = new LoggedInModel()
+            {
+                AccessToken = token,
+                User = user,
+            };
+            
+            return Ok(payload);
         }
         
         _logger.LogInformation($"Incorrect username/password for {login.Email}");
