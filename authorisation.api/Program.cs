@@ -6,19 +6,6 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Cors
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:3000",
-                    "https://localhost:3000")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
-});
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -56,7 +43,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .WithOrigins("https://localhost:3000", "http://localhost:3000")
+    .AllowCredentials());
 
 app.UseAuthentication();
 app.UseAuthorization();
