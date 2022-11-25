@@ -4,6 +4,8 @@ using authorisation.api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
+var  CorsPolicy = "_corsPolicy";
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -11,8 +13,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Cors
-builder.Services.AddCors(c => c.AddPolicy("corspolicy", build =>
-    build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: CorsPolicy,
+        policy  =>
+        {
+            policy.WithOrigins("http://localhost:3000",
+                "https://localhost:3000");
+        });
+});
 
 // Managers
 builder.Services.AddSingleton<UserManager>();
@@ -42,9 +51,9 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+app.UseCors(CorsPolicy);
 
-app.UseCors("corspolicy");
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
