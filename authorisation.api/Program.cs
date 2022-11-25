@@ -10,6 +10,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Cors
+builder.Services.AddCors(c => c.AddPolicy("corspolicy", build =>
+    build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()));
+
 // Managers
 builder.Services.AddSingleton<UserManager>();
 builder.Services.AddSingleton<LoginManager>();
@@ -35,19 +39,12 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.UseCors(x => x
-    .AllowAnyMethod()
-    .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true)
-    .AllowCredentials());
+app.UseCors("corspolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
