@@ -1,7 +1,5 @@
 using authorisation.api.Classes;
-using authorisation.api.Entities;
 using authorisation.api.Managers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace authorisation.api.Controllers;
@@ -30,7 +28,7 @@ public class UserController : ControllerBase
             }
             catch (Exception e)
             {
-                _logger.LogWarning("UserController: GetUser - Error:", e);
+                _logger.LogCritical("UserController: GetUser - Error:", e);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -47,7 +45,7 @@ public class UserController : ControllerBase
             }
             catch (Exception e)
             {
-                _logger.LogWarning($"UserController: GetUser - Error:", e);
+                _logger.LogCritical($"UserController: GetUser - Error:", e);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -74,7 +72,7 @@ public class UserController : ControllerBase
             }
             catch (Exception e)
             {
-                _logger.LogWarning($"UserController: CreateUser - Error:", e);
+                _logger.LogCritical($"UserController: CreateUser - Error:", e);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -97,7 +95,7 @@ public class UserController : ControllerBase
             }
             catch (Exception e)
             {
-                _logger.LogWarning($"UserController: UpdateUser - Error:", e);
+                _logger.LogCritical($"UserController: UpdateUser - Error:", e);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
