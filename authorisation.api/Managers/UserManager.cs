@@ -37,7 +37,7 @@ public class UserManager
 
         public async Task<UserModel> GetUser(Guid id)
         {
-            var user = await _user.Find(u => u.Id == id).FirstOrDefaultAsync();
+            var user = await _user.Find(u => u.Id == id).FirstAsync();
             return user.ToUserModel();
         }
 
@@ -51,9 +51,15 @@ public class UserManager
             return registeredUser.ToUserModel();
         }
 
+        public async Task<UserModel> UpdateUser(UserModel user)
+        {
+            var updatedUser = await _user.ReplaceOneAsync(u => u.Id == user.Id, user.ToUserEntity());
+            return user;
+        }
+
         public async Task<bool> ValidateUser(RegisterModel user)
         {
-            var email = await _user.Find(u => u.Email == user.Email).FirstOrDefaultAsync();
+            var email = await _user.Find(u => u.Email == user.Email).FirstAsync();
             
             if (email == null)
             {

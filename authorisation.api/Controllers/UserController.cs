@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace authorisation.api.Controllers;
 
 [ApiController]
-    [Route("[controller]")]
+[Route("[controller]")]
 public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
@@ -71,6 +71,25 @@ public class UserController : ControllerBase
             catch
             {
                 _logger.LogWarning($"UserController, CreateUser: Error creating user {user.Email}.");
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+        
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser([FromBody] UserModel user)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var updatedUser = await _userManager.UpdateUser(user);
+
+                return Ok(updatedUser);
+            }
+            catch
+            {
+                _logger.LogWarning($"UserController, UpdateUser: Error updating user {user.Email}.");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
