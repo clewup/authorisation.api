@@ -53,20 +53,51 @@ public class UserManager
 
         public async Task<UserModel> UpdateUser(UserModel user)
         {
-            var updatedUser = await _user.ReplaceOneAsync(u => u.Id == user.Id, user.ToUserEntity());
-            return user;
+            var existingUser = await _user.Find(u => u.Id == user.Id).FirstAsync();
+            var modelledUser = new UserEntity()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Password = existingUser.Password,
+                LineOne = user.LineOne,
+                LineTwo = user.LineTwo,
+                LineThree = user.LineThree,
+                Postcode = user.Postcode,
+                City = user.City,
+                County = user.County,
+                Country = user.Country
+            };
+            
+            var updatedUser = await _user.ReplaceOneAsync(u => u.Id == user.Id, modelledUser);
+            
+            return modelledUser.ToUserModel();
         }
 
-        public async Task<bool> ValidateUser(RegisterModel user)
+        public async Task<bool> ValidateEmail(RegisterModel user)
         {
             var email = await _user.Find(u => u.Email == user.Email).FirstAsync();
             
             if (email == null)
             {
-                if (user.Password == user.ConfirmPassword)
-                    return true;
+                return true;
             }
-
-            return false;
+            else
+            {
+                return false;
+            }
+        }
+        
+        public async Task<bool> ValidatePasswords(RegisterModel user)
+        {
+            if (user.Password == user.ConfirmPassword)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 }

@@ -28,9 +28,9 @@ public class UserController : ControllerBase
 
                 return Ok(users);
             }
-            catch
+            catch (Exception e)
             {
-                _logger.LogWarning("UserController, GetUser: Error retrieving users.");
+                _logger.LogWarning("UserController: GetUser - Error:", e);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -45,9 +45,9 @@ public class UserController : ControllerBase
 
                 return Ok(user);
             }
-            catch
+            catch (Exception e)
             {
-                _logger.LogWarning($"UserController, GetUser: Error retrieving user {id}.");
+                _logger.LogWarning($"UserController: GetUser - Error:", e);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -59,18 +59,22 @@ public class UserController : ControllerBase
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
+                
+                var isValidEmail = await _userManager.ValidateEmail(user);
+                if (!isValidEmail)
+                    return Conflict("Invalid Email.");
+                
+                var isValidPasswords = await _userManager.ValidatePasswords(user);
+                if (!isValidPasswords)
+                    return Conflict("Passwords do not match.");
 
-                var isValid = await _userManager.ValidateUser(user);
-                if (!isValid)
-                    return Conflict("User cannot be validated.");
-
-                var createdUser = _userManager.RegisterUser(user).Result;
+                var createdUser = await _userManager.RegisterUser(user);
 
                 return Created("User", createdUser);
             }
-            catch
+            catch (Exception e)
             {
-                _logger.LogWarning($"UserController, CreateUser: Error creating user {user.Email}.");
+                _logger.LogWarning($"UserController: CreateUser - Error:", e);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -83,13 +87,17 @@ public class UserController : ControllerBase
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
+                var existingUser = await _userManager.GetUser(user.Id);
+                if (existingUser == null)
+                    return Conflict("User not found.");
+                
                 var updatedUser = await _userManager.UpdateUser(user);
 
                 return Ok(updatedUser);
             }
-            catch
+            catch (Exception e)
             {
-                _logger.LogWarning($"UserController, UpdateUser: Error updating user {user.Email}.");
+                _logger.LogWarning($"UserController: UpdateUser - Error:", e);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
