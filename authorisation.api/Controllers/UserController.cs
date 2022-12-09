@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace authorisation.api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class UserController : ControllerBase
@@ -79,7 +80,6 @@ public class UserController : ControllerBase
         }
     }
         
-    [Authorize]
     [HttpPut]
     public async Task<IActionResult> UpdateUser([FromBody] UserModel user)
     {

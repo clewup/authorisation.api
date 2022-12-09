@@ -23,25 +23,19 @@ public class UserDataManager
     
     public async Task<List<UserEntity>> GetUsers()
     {
-        var users = await _context.Users
-            .Include(u => u.Roles)
-            .ToListAsync();
+        var users = await _context.Users.ToListAsync();
         return users;
     }
 
     public async Task<UserEntity?> GetUser(Guid id)
     {
-        var user = await _context.Users
-            .Include(u => u.Roles)
-            .FirstOrDefaultAsync(u => u.Id == id);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         return user;
     }
 
     public async Task<UserEntity?> GetUserByEmail(string email)
     {
-        var user = await _context.Users
-            .Include(u => u.Roles)
-            .FirstOrDefaultAsync(u => u.Email == email);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         return user;
     }
 
@@ -49,13 +43,9 @@ public class UserDataManager
     {
         var hashedPassword = _passwordHasher.HashPassword(user.Password);
         
-        var defaultRoles = await _context.Roles
-            .Where(r => r.Name == RoleType.User)
-            .ToListAsync();
-
         var mappedUser = _mapper.Map<UserEntity>(user);
         mappedUser.Password = hashedPassword;
-        mappedUser.Roles = defaultRoles;
+        mappedUser.Role = RoleType.User;
 
         _context.Users.Add(mappedUser);
         await _context.SaveChangesAsync();
@@ -66,12 +56,12 @@ public class UserDataManager
     public async Task<UserEntity> UpdateUser(UserModel user)
     {
         var existingUser = await _context.Users
-            .Include(u => u.Roles)
             .FirstOrDefaultAsync(u => u.Id == user.Id);
 
         existingUser.FirstName = user.FirstName;
         existingUser.LastName = user.LastName;
         existingUser.Email = user.Email;
+        existingUser.Role = user.Role;
         existingUser.LineOne = user.LineOne;
         existingUser.LineTwo = user.LineTwo;
         existingUser.LineThree = user.LineThree;

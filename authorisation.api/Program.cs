@@ -52,7 +52,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new UserMapper());
-    mc.AddProfile(new RoleMapper());
 });
 
 IMapper mapper = mapperConfig.CreateMapper();
