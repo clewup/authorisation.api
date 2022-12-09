@@ -37,7 +37,7 @@ public class LoginController : ControllerBase
             return Ok(payload);
         }
         
-        _logger.LogInformation($"Incorrect username/password for {login.Email}");
-        return NotFound("Incorrect username/password.");
+        _logger.LogInformation("Incorrect username/password for {LoginEmail}", login.Email);
+        return NotFound("Incorrect username or password.");
     }
 }
