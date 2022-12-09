@@ -1,6 +1,6 @@
-namespace ecommerce.api.Infrastructure;
+namespace authorisation.api.Infrastructure;
 
-public class StatusType
+public static class StatusType
 {
     public const int Active = 1;
     public const int Inactive = 2;

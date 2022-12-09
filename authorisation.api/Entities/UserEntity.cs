@@ -16,4 +16,6 @@ public class UserEntity : BaseEntity
     public string Country { get; set; } = "";
     
     public ICollection<RoleEntity> Roles { get; set; }
+    public List<UserRoleEntity> UserRoles { get; set; }
+
 }

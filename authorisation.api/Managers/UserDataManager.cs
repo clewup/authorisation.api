@@ -1,7 +1,9 @@
 using authorisation.api.Classes;
 using authorisation.api.Data;
 using authorisation.api.Entities;
+using authorisation.api.Infrastructure;
 using authorisation.api.Services;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace authorisation.api.Managers;
@@ -10,10 +12,12 @@ public class UserDataManager
 {
     private readonly AuthDbContext _context;
     private readonly PasswordHasher _passwordHasher;
+    private readonly IMapper _mapper;
 
-    public UserDataManager(AuthDbContext context, PasswordHasher passwordHasher)
+    public UserDataManager(AuthDbContext context, IMapper mapper, PasswordHasher passwordHasher)
     {
         _context = context;
+        _mapper = mapper;
         _passwordHasher = passwordHasher;
     }
     
@@ -44,29 +48,19 @@ public class UserDataManager
     public async Task<UserEntity> CreateUser(RegisterModel user)
     {
         var hashedPassword = _passwordHasher.HashPassword(user.Password);
-        var defaultRoles = await _context.Roles.Where(r => r.Name == "User").ToListAsync();
         
-        var createdUser = new UserEntity()
-        {
-            Id = new Guid(),
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Email = user.Email,
-            Password = hashedPassword,
-            LineOne = "",
-            LineTwo = "",
-            LineThree = "",
-            Postcode = "",
-            City = "",
-            County = "",
-            Country = "",
-            Roles = defaultRoles,
-        };
+        var defaultRoles = await _context.Roles
+            .Where(r => r.Name == RoleType.User)
+            .ToListAsync();
 
-        _context.Users.Add(createdUser);
+        var mappedUser = _mapper.Map<UserEntity>(user);
+        mappedUser.Password = hashedPassword;
+        mappedUser.Roles = defaultRoles;
+
+        _context.Users.Add(mappedUser);
         await _context.SaveChangesAsync();
 
-        return createdUser;
+        return mappedUser;
     }
 
     public async Task<UserEntity> UpdateUser(UserModel user)

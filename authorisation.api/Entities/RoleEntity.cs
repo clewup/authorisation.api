@@ -4,6 +4,7 @@ public class RoleEntity : BaseEntity
 {
     public string Name { get; set; } = "";
     
-    public Guid UserId { get; set; }
-    public UserEntity User { get; set; }
+    public ICollection<UserEntity> Users { get; set; }
+    public List<UserRoleEntity> UserRoles { get; set; }
+
 }

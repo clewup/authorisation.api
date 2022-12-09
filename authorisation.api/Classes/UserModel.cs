@@ -15,5 +15,5 @@ public class UserModel
     public string County { get; set; } = "";
     public string Country { get; set; } = "";
 
-    public List<string> Roles { get; set; }
+    public List<RoleModel> Roles { get; set; }
 }

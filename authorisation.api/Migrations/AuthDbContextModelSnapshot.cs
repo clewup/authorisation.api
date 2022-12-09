@@ -49,12 +49,7 @@ namespace authorisation.api.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Roles");
                 });
@@ -131,20 +126,68 @@ namespace authorisation.api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("authorisation.api.Entities.RoleEntity", b =>
+            modelBuilder.Entity("authorisation.api.Entities.UserRoleEntity", b =>
                 {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AddedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("AddedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("authorisation.api.Entities.UserRoleEntity", b =>
+                {
+                    b.HasOne("authorisation.api.Entities.RoleEntity", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("authorisation.api.Entities.UserEntity", "User")
-                        .WithMany("Roles")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Role");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("authorisation.api.Entities.RoleEntity", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("authorisation.api.Entities.UserEntity", b =>
                 {
-                    b.Navigation("Roles");
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

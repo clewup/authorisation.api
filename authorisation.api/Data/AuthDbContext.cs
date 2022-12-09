@@ -13,9 +13,21 @@ public class AuthDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserEntity>()
-            .HasMany(u => u.Roles)
-            .WithOne(r => r.User)
-            .HasForeignKey(r => r.UserId)
-            .IsRequired();
+            .HasMany(c => c.Roles)
+            .WithMany(p => p.Users)
+            .UsingEntity<UserRoleEntity>(
+                j => j
+                    .HasOne(ur => ur.Role)
+                    .WithMany(r => r.UserRoles)
+                    .HasForeignKey(ur => ur.RoleId),
+                j => j
+                    .HasOne(ur => ur.User)
+                    .WithMany(u => u.UserRoles)
+                    .HasForeignKey(ur => ur.UserId),
+                j =>
+                {
+                    j.ToTable("UserRoles");
+                    j.HasKey(cp => new { cp.UserId, cp.RoleId });
+                });
     }
 }

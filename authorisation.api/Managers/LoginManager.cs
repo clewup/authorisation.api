@@ -47,7 +47,7 @@ public class LoginManager
 
         foreach (var role in user.Roles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, role));
+            claims.Add(new Claim(ClaimTypes.Role, role.Name));
         }
 
         var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],

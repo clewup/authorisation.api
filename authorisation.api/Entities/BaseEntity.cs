@@ -1,4 +1,4 @@
-using ecommerce.api.Infrastructure;
+using authorisation.api.Infrastructure;
 
 namespace authorisation.api.Entities;
 
