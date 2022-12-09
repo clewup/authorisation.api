@@ -1,11 +1,11 @@
 using authorisation.api.Classes;
+using authorisation.api.Infrastructure;
 using authorisation.api.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace authorisation.api.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class UserController : ControllerBase
@@ -20,6 +20,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Policy = RoleType.Employee)]
     public async Task<IActionResult> GetUsers()
     {
         try
@@ -35,9 +36,9 @@ public class UserController : ControllerBase
         }
     }
 
-    [Authorize]
     [HttpGet]
     [Route("{userId}")]
+    [Authorize(Policy = RoleType.User)]
     public async Task<IActionResult> GetUser(Guid id)
     {
         try
@@ -54,6 +55,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> RegisterUser([FromBody] RegisterModel user)
     {
         try
@@ -81,6 +83,7 @@ public class UserController : ControllerBase
     }
         
     [HttpPut]
+    [Authorize(Policy = RoleType.User)]
     public async Task<IActionResult> UpdateUser([FromBody] UserModel user)
     {
         try

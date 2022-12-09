@@ -47,6 +47,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+builder.Services.AddAuthorization(options =>
+{
+    // Role based policies
+    options.AddPolicy("Developer", policy =>
+        policy.RequireClaim("role", "Developer"));
+    options.AddPolicy("Employee", policy =>
+        policy.RequireClaim("role", "Employee", "Developer"));
+    options.AddPolicy("External", policy =>
+        policy.RequireClaim("role", "External", "Employee", "Developer"));
+    options.AddPolicy("User", policy =>
+        policy.RequireClaim("role",  "User", "External", "Employee", "Developer"));
+});
 
 // Auto Mapper
 var mapperConfig = new MapperConfiguration(mc =>
