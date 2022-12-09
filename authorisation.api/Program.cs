@@ -1,5 +1,6 @@
 using System.Text;
 using authorisation.api.Data;
+using authorisation.api.Infrastructure;
 using authorisation.api.Managers;
 using authorisation.api.Services;
 using authorisation.api.Services.Mappers;
@@ -50,14 +51,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddAuthorization(options =>
 {
     // Role based policies
-    options.AddPolicy("Developer", policy =>
-        policy.RequireClaim("role", "Developer"));
-    options.AddPolicy("Employee", policy =>
-        policy.RequireClaim("role", "Employee", "Developer"));
-    options.AddPolicy("External", policy =>
-        policy.RequireClaim("role", "External", "Employee", "Developer"));
-    options.AddPolicy("User", policy =>
-        policy.RequireClaim("role",  "User", "External", "Employee", "Developer"));
+    options.AddPolicy(RoleType.Developer, policy =>
+        policy.RequireClaim("role", RoleType.Developer));
+    options.AddPolicy(RoleType.Employee, policy =>
+        policy.RequireClaim("role", RoleType.Employee, RoleType.Developer));
+    options.AddPolicy(RoleType.External, policy =>
+        policy.RequireClaim("role", RoleType.External, RoleType.Employee, RoleType.Developer));
+    options.AddPolicy(RoleType.User, policy =>
+        policy.RequireClaim("role", RoleType.User, RoleType.External, RoleType.Employee, RoleType.Developer));
 });
 
 // Auto Mapper
