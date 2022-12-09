@@ -19,19 +19,25 @@ public class UserDataManager
     
     public async Task<List<UserEntity>> GetUsers()
     {
-        var users = await _context.Users.ToListAsync();
+        var users = await _context.Users
+            .Include(u => u.Roles)
+            .ToListAsync();
         return users;
     }
 
     public async Task<UserEntity?> GetUser(Guid id)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        var user = await _context.Users
+            .Include(u => u.Roles)
+            .FirstOrDefaultAsync(u => u.Id == id);
         return user;
     }
 
     public async Task<UserEntity?> GetUserByEmail(string email)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        var user = await _context.Users
+            .Include(u => u.Roles)
+            .FirstOrDefaultAsync(u => u.Email == email);
         return user;
     }
 
@@ -65,7 +71,9 @@ public class UserDataManager
 
     public async Task<UserEntity> UpdateUser(UserModel user)
     {
-        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+        var existingUser = await _context.Users
+            .Include(u => u.Roles)
+            .FirstOrDefaultAsync(u => u.Id == user.Id);
 
         existingUser.FirstName = user.FirstName;
         existingUser.LastName = user.LastName;
