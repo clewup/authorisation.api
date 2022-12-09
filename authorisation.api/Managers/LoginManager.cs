@@ -38,24 +38,30 @@ public class LoginManager
 
     public string GenerateToken(UserModel user)
     {
+        var tokenHandler = new JwtSecurityTokenHandler();
+
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var claims = new List<Claim>();
-        claims.Add(new Claim("userId", user.Id.ToString()));
-        claims.Add(new Claim("email", user.Email));
+        var roles = JsonSerializer.Serialize(user.Roles);
 
-        foreach (var role in user.Roles)
+        var claims = new ClaimsIdentity(new[]
         {
-            claims.Add(new Claim(ClaimTypes.Role, role.Name));
-        }
+            new Claim("id", user.Id.ToString()),
+            new Claim("email", user.Email.ToString()),
+            new Claim("roles", roles)
+        });
+        
+        var tokenDescriptor = new SecurityTokenDescriptor()
+        {
+            Audience = _configuration["Jwt:Audience"],
+            Subject = claims,
+            Expires = DateTime.UtcNow.AddHours(2),
+            SigningCredentials = credentials,
+        };
+        
+        var token = tokenHandler.CreateToken(tokenDescriptor);
 
-        var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
-            _configuration["Jwt:Audience"],
-            claims,
-            expires: DateTime.Now.AddHours(1),
-            signingCredentials: credentials);
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return tokenHandler.WriteToken(token);
     }
 }
