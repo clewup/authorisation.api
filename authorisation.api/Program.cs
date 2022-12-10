@@ -52,13 +52,13 @@ builder.Services.AddAuthorization(options =>
 {
     // Role based policies
     options.AddPolicy(RoleType.Developer, policy =>
-        policy.RequireClaim("role", RoleType.Developer));
+        policy.RequireRole(RoleType.Developer));
     options.AddPolicy(RoleType.Employee, policy =>
-        policy.RequireClaim("role", RoleType.Employee, RoleType.Developer));
+        policy.RequireRole(RoleType.Employee, RoleType.Developer));
     options.AddPolicy(RoleType.External, policy =>
-        policy.RequireClaim("role", RoleType.External, RoleType.Employee, RoleType.Developer));
+        policy.RequireRole(RoleType.External, RoleType.Employee, RoleType.Developer));
     options.AddPolicy(RoleType.User, policy =>
-        policy.RequireClaim("role", RoleType.User, RoleType.External, RoleType.Employee, RoleType.Developer));
+        policy.RequireRole(RoleType.User, RoleType.External, RoleType.Employee, RoleType.Developer));
 });
 
 // Auto Mapper

@@ -30,8 +30,8 @@ public class LoginController : ControllerBase
             
             var payload = new LoggedInModel()
             {
-                AccessToken = token,
                 User = user,
+                AccessToken = token,
             };
             
             return Ok(payload);

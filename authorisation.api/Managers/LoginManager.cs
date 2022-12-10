@@ -42,7 +42,11 @@ public class LoginManager
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         
         var claims = new List<Claim>();
-        claims.Add(new Claim("userId", user.Id.ToString()));
+        claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+        claims.Add(new Claim(ClaimTypes.Email, user.Email));
+        claims.Add(new Claim(ClaimTypes.Role, user.Role));
+        
+        claims.Add(new Claim("id", user.Id.ToString()));
         claims.Add(new Claim("email", user.Email));
         claims.Add(new Claim("role", user.Role));
 
