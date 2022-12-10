@@ -29,7 +29,9 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins(
                     "http://localhost:3000",
-                    "https://localhost:3000")
+                    "https://localhost:3000",
+                    "http://ecommerce-ui-flame.vercel.app",
+                    "https://ecommerce-ui-flame.vercel.app")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
