@@ -14,11 +14,9 @@ public class LoginManager
     private readonly PasswordHasher _passwordHasher;
     private readonly UserDataManager _userDataManager;
     private readonly IMapper _mapper;
-    private readonly IConfiguration _configuration;
 
-    public LoginManager(IConfiguration configuration, UserDataManager userDataManager, IMapper mapper, PasswordHasher passwordHasher)
+    public LoginManager(UserDataManager userDataManager, IMapper mapper, PasswordHasher passwordHasher)
     {
-        _configuration = configuration;
         _userDataManager = userDataManager;
         _mapper = mapper;
         _passwordHasher = passwordHasher;
@@ -38,7 +36,7 @@ public class LoginManager
 
     public string GenerateToken(UserModel user)
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")!));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         
         var claims = new List<Claim>();
@@ -50,8 +48,8 @@ public class LoginManager
         claims.Add(new Claim("email", user.Email));
         claims.Add(new Claim("role", user.Role));
 
-        var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
-            _configuration["Jwt:Audience"],
+        var token = new JwtSecurityToken(Environment.GetEnvironmentVariable("JWT_ISSUER"),
+            Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
             claims,
             expires: DateTime.Now.AddHours(2),
             signingCredentials: credentials);

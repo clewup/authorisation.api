@@ -18,8 +18,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Database
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? "";
 builder.Services.AddEntityFrameworkNpgsql().AddDbContext<AuthDbContext>(opt =>
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("AuthorisationConnection")));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString(connectionString)));
 
 // Cors
 builder.Services.AddCors(options =>
@@ -45,9 +46,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuer = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        ValidIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
+        ValidAudience = Environment.GetEnvironmentVariable("DATABASE_AUDIENCE"),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")!))
     };
 });
 builder.Services.AddAuthorization(options =>
