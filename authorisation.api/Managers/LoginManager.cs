@@ -11,15 +11,17 @@ namespace authorisation.api.Managers;
 
 public class LoginManager
 {
-    private readonly PasswordHasher _passwordHasher;
     private readonly UserDataManager _userDataManager;
     private readonly IMapper _mapper;
+    private readonly PasswordHasher _passwordHasher;
+    private readonly IConfiguration _configuration;
 
-    public LoginManager(UserDataManager userDataManager, IMapper mapper, PasswordHasher passwordHasher)
+    public LoginManager(UserDataManager userDataManager, IMapper mapper, PasswordHasher passwordHasher, IConfiguration configuration)
     {
         _userDataManager = userDataManager;
         _mapper = mapper;
         _passwordHasher = passwordHasher;
+        _configuration = configuration;
     }
 
     public async Task<UserModel?> Authenticate(LoginModel login)
@@ -36,7 +38,18 @@ public class LoginManager
 
     public string GenerateToken(UserModel user)
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")!));
+        var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
+        var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+        var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+
+        if (jwtIssuer == null || jwtAudience == null || jwtKey == null)
+        {
+            jwtIssuer = _configuration["Jwt:Issuer"];
+            jwtAudience = _configuration["Jwt:Audience"];
+            jwtKey = _configuration["Jwt:Key"];
+        }
+        
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         
         var claims = new List<Claim>();
@@ -48,8 +61,8 @@ public class LoginManager
         claims.Add(new Claim("email", user.Email));
         claims.Add(new Claim("role", user.Role));
 
-        var token = new JwtSecurityToken(Environment.GetEnvironmentVariable("JWT_ISSUER"),
-            Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
+        var token = new JwtSecurityToken(jwtIssuer,
+            jwtAudience,
             claims,
             expires: DateTime.Now.AddHours(2),
             signingCredentials: credentials);
