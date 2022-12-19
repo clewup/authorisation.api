@@ -45,28 +45,14 @@ builder.Services.AddCors(options =>
         policy  =>
         {
             policy.WithOrigins(
+                    "http://localhost:3000",
+                    "https://localhost:3000",
                     "http://ecommerce.clewup.co.uk",
                     "https://ecommerce.clewup.co.uk")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
 });
-
-if (isDevelopment)
-{
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy(name: CorsPolicy,
-            policy =>
-            {
-                policy.WithOrigins(
-                        "http://localhost:3000",
-                        "https://localhost:3000")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
-    });
-}
 
 // Jwt
 var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
