@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.RegularExpressions;
 using authorisation.api.Data;
 using authorisation.api.Infrastructure;
 using authorisation.api.Managers;
@@ -18,9 +19,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Database
-var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? "";
-builder.Services.AddEntityFrameworkNpgsql().AddDbContext<AuthDbContext>(opt =>
-    opt.UseNpgsql(builder.Configuration.GetConnectionString(connectionString)));
+builder.Services.AddEntityFrameworkNpgsql().AddDbContext<AuthDbContext>(options =>
+{
+    var m = Regex.Match(Environment.GetEnvironmentVariable("DATABASE_URL"), @"postgres://(.*):(.*)@(.*):(.*)/(.*)");
+    options.UseNpgsql(
+        $"Server={m.Groups[3]};Port={m.Groups[4]};User Id={m.Groups[1]};Password={m.Groups[2]};Database={m.Groups[5]};sslmode=Prefer;Trust Server Certificate=true");
+});
 
 // Cors
 builder.Services.AddCors(options =>
