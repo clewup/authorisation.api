@@ -35,8 +35,8 @@ builder.Services.AddCors(options =>
             policy.WithOrigins(
                     "http://localhost:3000",
                     "https://localhost:3000",
-                    "http://ecommerce-ui-flame.vercel.app",
-                    "https://ecommerce-ui-flame.vercel.app")
+                    "http://ecommerce.clewup.co.uk",
+                    "https://ecommerce.clewup.co.uk")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
