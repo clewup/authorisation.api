@@ -2,7 +2,7 @@ using authorisation.api.Classes;
 using authorisation.api.Entities;
 using AutoMapper;
 
-namespace authorisation.api.Services.Mappers;
+namespace authorisation.api.Mappers;
 
 public class UserMapper : Profile
 {

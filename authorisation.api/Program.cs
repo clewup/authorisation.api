@@ -1,10 +1,14 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using authorisation.api.Data;
+using authorisation.api.DataManagers;
+using authorisation.api.DataManagers.Contracts;
 using authorisation.api.Infrastructure;
 using authorisation.api.Managers;
+using authorisation.api.Managers.Contracts;
+using authorisation.api.Mappers;
 using authorisation.api.Services;
-using authorisation.api.Services.Mappers;
+using authorisation.api.Services.Contracts;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -101,12 +105,14 @@ IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 // Managers
-builder.Services.AddTransient<UserManager>();
-builder.Services.AddTransient<UserDataManager>();
-builder.Services.AddTransient<LoginManager>();
+builder.Services.AddTransient<IUserManager, UserManager>();
+builder.Services.AddTransient<ILoginManager, LoginManager>();
+
+// Data Managers
+builder.Services.AddTransient<IUserDataManager, UserDataManager>();
 
 // Services
-builder.Services.AddTransient<PasswordHasher>();
+builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 var app = builder.Build();

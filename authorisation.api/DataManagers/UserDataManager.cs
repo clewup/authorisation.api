@@ -1,20 +1,22 @@
 using authorisation.api.Classes;
 using authorisation.api.Data;
+using authorisation.api.DataManagers.Contracts;
 using authorisation.api.Entities;
 using authorisation.api.Infrastructure;
 using authorisation.api.Services;
+using authorisation.api.Services.Contracts;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
-namespace authorisation.api.Managers;
+namespace authorisation.api.DataManagers;
 
-public class UserDataManager
+public class UserDataManager : IUserDataManager
 {
     private readonly AuthDbContext _context;
-    private readonly PasswordHasher _passwordHasher;
+    private readonly IPasswordHasher _passwordHasher;
     private readonly IMapper _mapper;
 
-    public UserDataManager(AuthDbContext context, IMapper mapper, PasswordHasher passwordHasher)
+    public UserDataManager(AuthDbContext context, IMapper mapper, IPasswordHasher passwordHasher)
     {
         _context = context;
         _mapper = mapper;

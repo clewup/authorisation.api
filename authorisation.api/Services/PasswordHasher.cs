@@ -1,6 +1,8 @@
+using authorisation.api.Services.Contracts;
+
 namespace authorisation.api.Services;
 
-public class PasswordHasher
+public class PasswordHasher : IPasswordHasher
 {
     public PasswordHasher()
     {

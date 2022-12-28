@@ -1,22 +1,23 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
 using authorisation.api.Classes;
-using authorisation.api.Services;
+using authorisation.api.DataManagers.Contracts;
+using authorisation.api.Managers.Contracts;
+using authorisation.api.Services.Contracts;
 using AutoMapper;
 using Microsoft.IdentityModel.Tokens;
 
 namespace authorisation.api.Managers;
 
-public class LoginManager
+public class LoginManager : ILoginManager
 {
-    private readonly UserDataManager _userDataManager;
+    private readonly IUserDataManager _userDataManager;
     private readonly IMapper _mapper;
-    private readonly PasswordHasher _passwordHasher;
+    private readonly IPasswordHasher _passwordHasher;
     private readonly IConfiguration _configuration;
 
-    public LoginManager(UserDataManager userDataManager, IMapper mapper, PasswordHasher passwordHasher, IConfiguration configuration)
+    public LoginManager(IUserDataManager userDataManager, IMapper mapper, IPasswordHasher passwordHasher, IConfiguration configuration)
     {
         _userDataManager = userDataManager;
         _mapper = mapper;

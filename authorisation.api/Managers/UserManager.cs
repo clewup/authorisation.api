@@ -1,21 +1,20 @@
 using authorisation.api.Classes;
-using authorisation.api.Entities;
+using authorisation.api.DataManagers.Contracts;
+using authorisation.api.Managers.Contracts;
 using authorisation.api.Services;
 using AutoMapper;
 
 namespace authorisation.api.Managers;
 
-public class UserManager
+public class UserManager : IUserManager
 {
-    private readonly PasswordHasher _passwordHasher;
-    private readonly UserDataManager _userDataManager;
+    private readonly IUserDataManager _userDataManager;
     private readonly IMapper _mapper;
 
-    public UserManager(UserDataManager userDataManager, IMapper mapper, PasswordHasher passwordHasher)
+    public UserManager(IUserDataManager userDataManager, IMapper mapper)
     {
         _userDataManager = userDataManager;
         _mapper = mapper;
-        _passwordHasher = passwordHasher;
     }
 
     public async Task<List<UserModel>> GetUsers()

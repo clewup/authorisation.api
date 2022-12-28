@@ -1,5 +1,6 @@
 using authorisation.api.Classes;
 using authorisation.api.Managers;
+using authorisation.api.Managers.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +11,9 @@ namespace authorisation.api.Controllers;
 public class LoginController : ControllerBase
 {
     private readonly ILogger<LoginController> _logger;
-    private readonly LoginManager _loginManager;
+    private readonly ILoginManager _loginManager;
 
-    public LoginController(ILogger<LoginController> logger, LoginManager loginManager)
+    public LoginController(ILogger<LoginController> logger, ILoginManager loginManager)
     {
         _logger = logger;
         _loginManager = loginManager;

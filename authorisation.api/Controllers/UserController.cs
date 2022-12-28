@@ -1,6 +1,7 @@
 using authorisation.api.Classes;
 using authorisation.api.Infrastructure;
 using authorisation.api.Managers;
+using authorisation.api.Managers.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +12,9 @@ namespace authorisation.api.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
-    private readonly UserManager _userManager;
+    private readonly IUserManager _userManager;
 
-    public UserController(ILogger<UserController> logger, UserManager userManager)
+    public UserController(ILogger<UserController> logger, IUserManager userManager)
     {
         _logger = logger;
         _userManager = userManager;
