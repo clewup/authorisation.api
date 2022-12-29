@@ -9,5 +9,5 @@ public interface IUserDataManager
     Task<UserEntity?> GetUser(Guid id);
     Task<UserEntity?> GetUserByEmail(string email);
     Task<UserEntity> CreateUser(RegisterModel user);
-    Task<UserEntity> UpdateUser(UserModel user);
+    Task<UserEntity?> UpdateUser(UserModel user);
 }

@@ -1,8 +1,11 @@
 using authorisation.api.Classes;
 using authorisation.api.DataManagers.Contracts;
+using authorisation.api.Entities;
 using authorisation.api.Managers.Contracts;
 using authorisation.api.Services;
+using authorisation.api.Services.Contracts;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace authorisation.api.Managers;
 
@@ -10,11 +13,13 @@ public class UserManager : IUserManager
 {
     private readonly IUserDataManager _userDataManager;
     private readonly IMapper _mapper;
+    private readonly IPasswordHasher _passwordHasher;
 
-    public UserManager(IUserDataManager userDataManager, IMapper mapper)
+    public UserManager(IUserDataManager userDataManager, IMapper mapper, IPasswordHasher passwordHasher)
     {
         _userDataManager = userDataManager;
         _mapper = mapper;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<List<UserModel>> GetUsers()

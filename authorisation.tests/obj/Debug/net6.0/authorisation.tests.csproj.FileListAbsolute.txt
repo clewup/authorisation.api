@@ -130,3 +130,4 @@
 /Users/clew/Documents/repos/authorisation.api/authorisation.tests/obj/Debug/net6.0/authorisation.tests.pdb
 /Users/clew/Documents/repos/authorisation.api/authorisation.tests/obj/Debug/net6.0/authorisation.tests.genruntimeconfig.cache
 /Users/clew/Documents/repos/authorisation.api/authorisation.tests/obj/Debug/net6.0/ref/authorisation.tests.dll
+/Users/clew/Documents/repos/authorisation.api/authorisation.tests/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.InMemory.dll

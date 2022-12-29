@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "IOl2HNQViTWH3oa0HuWqeUnAElN3Q0ij1ZefaYfWiem2FFHTP1g6mMdM6J2zYVanr3nWRUfCDQinCkxkXtxEpQ==",
+  "dgSpecHash": "j3Y8B6jRDbGpKsoOw4LyRgSNKyIOKth4++kwJiDMYYbcDeD32wm7Few7/o8jNEb4d3V+cITtahOfEqGj+1GyxQ==",
   "success": true,
   "projectFilePath": "/Users/clew/Documents/repos/authorisation.api/authorisation.tests/authorisation.tests.csproj",
   "expectedPackageFiles": [
@@ -17,9 +17,10 @@
     "/Users/clew/.nuget/packages/microsoft.aspnetcore.http.features/2.2.0/microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "/Users/clew/.nuget/packages/microsoft.codecoverage/17.1.0/microsoft.codecoverage.17.1.0.nupkg.sha512",
     "/Users/clew/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
-    "/Users/clew/.nuget/packages/microsoft.entityframeworkcore/6.0.11/microsoft.entityframeworkcore.6.0.11.nupkg.sha512",
-    "/Users/clew/.nuget/packages/microsoft.entityframeworkcore.abstractions/6.0.11/microsoft.entityframeworkcore.abstractions.6.0.11.nupkg.sha512",
-    "/Users/clew/.nuget/packages/microsoft.entityframeworkcore.analyzers/6.0.11/microsoft.entityframeworkcore.analyzers.6.0.11.nupkg.sha512",
+    "/Users/clew/.nuget/packages/microsoft.entityframeworkcore/6.0.12/microsoft.entityframeworkcore.6.0.12.nupkg.sha512",
+    "/Users/clew/.nuget/packages/microsoft.entityframeworkcore.abstractions/6.0.12/microsoft.entityframeworkcore.abstractions.6.0.12.nupkg.sha512",
+    "/Users/clew/.nuget/packages/microsoft.entityframeworkcore.analyzers/6.0.12/microsoft.entityframeworkcore.analyzers.6.0.12.nupkg.sha512",
+    "/Users/clew/.nuget/packages/microsoft.entityframeworkcore.inmemory/6.0.12/microsoft.entityframeworkcore.inmemory.6.0.12.nupkg.sha512",
     "/Users/clew/.nuget/packages/microsoft.entityframeworkcore.relational/6.0.11/microsoft.entityframeworkcore.relational.6.0.11.nupkg.sha512",
     "/Users/clew/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "/Users/clew/.nuget/packages/microsoft.extensions.caching.abstractions/6.0.0/microsoft.extensions.caching.abstractions.6.0.0.nupkg.sha512",

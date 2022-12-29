@@ -47,3 +47,4 @@
 /Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
 /Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/appsettings.Local.json
+/Users/clew/Documents/repos/authorisation.api/authorisation.api/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.InMemory.dll
