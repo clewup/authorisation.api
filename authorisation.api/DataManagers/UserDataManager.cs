@@ -55,14 +55,11 @@ public class UserDataManager : IUserDataManager
         return mappedUser;
     }
 
-    public async Task<UserEntity?> UpdateUser(UserModel user)
+    public async Task<UserEntity> UpdateUser(UserModel user)
     {
         var existingUser = await _context.Users
             .FirstOrDefaultAsync(u => u.Id == user.Id);
 
-        if (existingUser == null)
-            return null;
-        
         existingUser.FirstName = user.FirstName;
         existingUser.LastName = user.LastName;
         existingUser.Email = user.Email;

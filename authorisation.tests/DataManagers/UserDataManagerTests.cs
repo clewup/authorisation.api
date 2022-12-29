@@ -234,36 +234,4 @@ public class UserDataManagerTests
             Assert.Equal("USER_1_COUNTRY_UPDATED", result?.Country);
         }
     }
-    
-    [Fact]
-    public async void UserDataManager_UpdateUser_Unsuccessful()
-    {
-        var mockedMapper = new Mock<IMapper>();
-        var mockedPasswordHasher = new Mock<IPasswordHasher>();
-        
-        var user = new UserModel()
-        {
-            Id = Guid.Parse("3E1A122D-DE6D-4934-8815-8D468865C5D8"),
-            FirstName = "USER_1_FIRST_NAME_UPDATED",
-            LastName = "USER_1_LAST_NAME_UPDATED",
-            Email = "USER_1_EMAIL_UPDATED",
-            Role = RoleType.Developer,
-            LineOne = "USER_1_LINE_ONE_UPDATED",
-            LineTwo = "USER_1_LINE_TWO_UPDATED",
-            LineThree = "USER_1_LINE_THREE_UPDATED",
-            Postcode = "USER_1_POSTCODE_UPDATED",
-            City = "USER_1_CITY_UPDATED",
-            County = "USER_1_COUNTY_UPDATED",
-            Country = "USER_1_COUNTRY_UPDATED",
-        };
-        
-        using (var context = new AuthDbContext(options))
-        {
-            var userDataManager = new UserDataManager(context, mockedMapper.Object, mockedPasswordHasher.Object);
-
-            var result = await userDataManager.UpdateUser(user);
-            
-            Assert.Null(result);
-        }
-    }
 }
