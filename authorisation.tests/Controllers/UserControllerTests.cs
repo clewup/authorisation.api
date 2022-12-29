@@ -176,6 +176,29 @@ public class UserControllerTests
     }
     
     [Fact]
+    public async void UserController_RegisterUser_ModelState_Unsuccessful()
+    {
+        var register = new RegisterModel()
+        {
+            FirstName = "USER_FIRST_NAME",
+            LastName = "USER_LAST_NAME",
+            Email = "USER_EMAIL",
+            Password = "USER_PASSWORD",
+            ConfirmPassword = "USER_PASSWORD",
+        };
+        
+        var mockedLogger = new Mock<ILogger<UserController>>();
+        var mockedUserManager = new Mock<IUserManager>();
+
+        var userController = new UserController(mockedLogger.Object, mockedUserManager.Object);
+        userController.ModelState.AddModelError("INVALID_MODEL", "INVALID_MODEL");
+
+        var result = await userController.RegisterUser(register);
+        
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+    
+    [Fact]
     public async void UserController_UpdateUser_Successful()
     {
         var user = new UserModel()
@@ -233,5 +256,35 @@ public class UserControllerTests
         var result = await userController.UpdateUser(user);
         
         Assert.IsType<NoContentResult>(result);
+    }
+    
+    [Fact]
+    public async void UserController_UpdateUser_ModelState_Unsuccessful()
+    {
+        var user = new UserModel()
+        {
+            Id = Guid.Parse("3E1A122D-DE6D-4934-8815-8D468865C5DC"),
+            FirstName = "USER_FIRST_NAME_UPDATED",
+            LastName = "USER_LAST_NAME_UPDATED",
+            Email = "USER_EMAIL_UPDATED",
+            Role = RoleType.User,
+            LineOne = "USER_LINE_ONE_UPDATED",
+            LineTwo = "USER_LINE_TWO_UPDATED",
+            LineThree = "USER_LINE_THREE_UPDATED",
+            Postcode = "USER_POSTCODE_UPDATED",
+            City = "USER_CITY_UPDATED",
+            County = "USER_COUNTY_UPDATED",
+            Country = "USER_COUNTRY_UPDATED",
+        };
+        
+        var mockedLogger = new Mock<ILogger<UserController>>();
+        var mockedUserManager = new Mock<IUserManager>();
+
+        var userController = new UserController(mockedLogger.Object, mockedUserManager.Object);
+        userController.ModelState.AddModelError("INVALID_MODEL", "INVALID_MODEL");
+
+        var result = await userController.UpdateUser(user);
+        
+        Assert.IsType<BadRequestObjectResult>(result);
     }
 }
