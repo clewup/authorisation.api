@@ -14,7 +14,7 @@ namespace authorisation.tests.DataManagers;
 public class UserDataManagerTests
 {
     DbContextOptions<AuthDbContext> options = new DbContextOptionsBuilder<AuthDbContext>()
-        .UseInMemoryDatabase(databaseName: "AuthDb")
+        .UseInMemoryDatabase(databaseName: "UserDataManagerTests")
         .Options;
     
     public UserDataManagerTests()
@@ -56,6 +56,7 @@ public class UserDataManagerTests
             context.SaveChangesAsync();
         }
     }
+    
     [Fact]
     public async Task UserDataManager_GetUsers_Successful()
     {
